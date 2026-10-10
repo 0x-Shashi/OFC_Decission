@@ -1,0 +1,29 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.scm.inventory-organizations
+title: "Inventory organizations: the service answers and returns the fields integrations rely on"
+module: SCM
+product: Inventory Management
+process: Organizations
+priority: medium
+tags: [library, supply-chain-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Inventory organizations service answers and lists records
+    value: GET /fscmRestApi/resources/11.13.18.05/inventoryOrganizations?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].OrganizationId": "*"
+        "items[0].OrganizationCode": "*"
+        "items[0].OrganizationName": "*"
+      save:
+        first_id: items[0].OrganizationId
+  - action: api_call
+    intent: One record of Inventory organizations can be read by its id
+    value: GET /fscmRestApi/resources/11.13.18.05/inventoryOrganizations/${first_id}?onlyData=true
+    options:
+      check:
+        "OrganizationId": "*"

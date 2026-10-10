@@ -1,0 +1,14 @@
+pack: procurement-services
+title: Procurement services (read only)
+module: Procurement
+kind: rest
+version: 1
+read_only: true
+description: Asks the Procurement REST services for one record each (suppliers, purchase orders, requisitions, agreements,
+  procurement agents, negotiations) and checks the fields integrations rely on.
+needs: A test user with the Procurement duties to read these services. A service the user may not read answers HTTP
+  403. A test that checks fields needs at least one record of that kind.
+checked:
+  date: '2026-10-03'
+  passed: 6
+  of: 6

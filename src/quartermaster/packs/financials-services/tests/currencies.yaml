@@ -1,0 +1,29 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.fin.currencies
+title: "Currencies (list of values): the service answers and returns the fields integrations rely on"
+module: Financials
+product: General Ledger
+process: Currencies
+priority: medium
+tags: [library, financials-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Currencies (list of values) service answers and lists records
+    value: GET /fscmRestApi/resources/11.13.18.05/currenciesLOV?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].CurrencyCode": "*"
+        "items[0].Name": "*"
+        "items[0].EnabledFlag": "*"
+      save:
+        first_id: items[0].CurrencyCode
+  - action: api_call
+    intent: One record of Currencies (list of values) can be read by its id
+    value: GET /fscmRestApi/resources/11.13.18.05/currenciesLOV/${first_id}?onlyData=true
+    options:
+      check:
+        "CurrencyCode": "*"

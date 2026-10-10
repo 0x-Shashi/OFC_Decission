@@ -1,0 +1,10 @@
+# DEMO suite: every demo test that is meant to pass, leaving out the ones that are meant to fail
+# (retry, suggested fixes, and the two that show a gap or a setup that is not met).
+# See it in Quartermaster under Suites, and run it with one click.
+suite: demos-that-pass
+title: Demos that pass
+description: The read-only demo tests that should all pass on your pod.
+include:
+  - tags: [demo]
+exclude:
+  - tests: [demo.retry, demo.suggest, demo.test-data-gap, demo.setup-gap]

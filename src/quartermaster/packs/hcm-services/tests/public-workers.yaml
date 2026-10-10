@@ -1,0 +1,29 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.hcm.public-workers
+title: "Public workers (the directory): the service answers and returns the fields integrations rely on"
+module: HCM
+product: Global Human Resources
+process: Workers
+priority: medium
+tags: [library, hcm-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Public workers (the directory) service answers and lists records
+    value: GET /hcmRestApi/resources/11.13.18.05/publicWorkers?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].PersonId": "*"
+        "items[0].PersonNumber": "*"
+        "items[0].DisplayName": "*"
+      save:
+        first_id: items[0].PersonId
+  - action: api_call
+    intent: One record of Public workers (the directory) can be read by its id
+    value: GET /hcmRestApi/resources/11.13.18.05/publicWorkers/${first_id}?onlyData=true
+    options:
+      check:
+        "PersonId": "*"

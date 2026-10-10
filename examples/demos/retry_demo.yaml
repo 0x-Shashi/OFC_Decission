@@ -1,0 +1,14 @@
+# DEMO: a test that always fails, to see retries. It only reads from the pod (one GET), so it is safe.
+# The REST service name ends in V9 on purpose: it does not exist, so the step fails every time.
+# With "If a step fails: Try once more" (Settings, Evidence) the step says "Tried 2 times".
+id: demo.retry
+title: Retry demo (always fails, reads only)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+steps:
+  - action: api_call
+    intent: Read a service that does not exist
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV9?limit=1

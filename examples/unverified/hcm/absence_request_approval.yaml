@@ -1,0 +1,72 @@
+# NOT YET CHECKED AGAINST A POD: navigation paths, labels and data are unverified examples.
+# This test submits a real transaction; run it only on a pod where that is acceptable.
+id: hcm.absence-request-approval
+title: Employee requests vacation and line manager approves it
+module: HCM
+product: Absence Management
+process: Absence
+persona: Employee
+priority: high
+tags: [absence, approval, self service]
+estimated_minutes: 7
+data:
+  absence_type: Vacation
+  start_date: "2026-11-16"
+  end_date: "2026-11-17"
+  comment: QM absence ${RUN_ID}
+steps:
+  - action: navigate
+    intent: Open Add Absence
+    value: Me > Time and Absences > Add Absence
+  - action: select
+    intent: Choose absence type
+    value: ${absence_type}
+    target:
+      strategies:
+        - label: Type
+        - label: Absence Type
+  - action: fill
+    intent: Enter start date
+    value: ${start_date}
+    target:
+      strategies:
+        - label: Start Date
+  - action: fill
+    intent: Enter end date
+    value: ${end_date}
+    target:
+      strategies:
+        - label: End Date
+  - action: fill
+    intent: Add a traceable comment
+    value: ${comment}
+    target:
+      strategies:
+        - label: Comments
+  - action: click
+    intent: Submit the absence
+    target:
+      strategies:
+        - role: "button:Submit"
+  - action: login_as
+    intent: Switch to the approving manager
+    value: Line Manager
+  - action: navigate
+    intent: Open approvals worklist
+    value: Tools > Worklist
+  - action: click
+    intent: Open the absence notification
+    target:
+      strategies:
+        - text: ${comment}
+  - action: click
+    intent: Approve the absence
+    target:
+      strategies:
+        - role: "button:Approve"
+  - action: assert_text
+    intent: Absence is approved
+    value: Approved
+    target:
+      strategies:
+        - label: Status

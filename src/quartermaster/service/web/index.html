@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quartermaster</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231f4fd8'/%3E%3Cpath d='M10 16.5l4 4 8-9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <!-- Inter, when this computer can reach Google Fonts; otherwise the system font is used. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    // Apply the saved theme before the page paints, so it never flashes the wrong one.
+    try { const t = JSON.parse(localStorage.getItem("qm.theme") || "null"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+    // The sidebar starts collapsed on narrower screens unless the person chose otherwise.
+    try {
+      const rail = JSON.parse(localStorage.getItem("qm.rail") || "null");
+      if (rail === true || (rail === null && innerWidth < 1100)) document.documentElement.classList.add("rail");
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="app">
+    <aside class="side" aria-label="Main">
+      <div class="side-head">
+        <a class="brand" href="#/" aria-label="Quartermaster overview">
+          <span class="logo"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <span class="brand-text"><span class="brand-name">Quartermaster</span><br><span class="brand-sub">Oracle Fusion release testing</span></span>
+        </a>
+      </div>
+      <nav class="nav" id="nav" aria-label="Sections"></nav>
+      <div class="side-foot">
+        <div id="env"></div>
+        <button class="collapse-btn" id="collapse-btn" type="button"></button>
+      </div>
+    </aside>
+    <div class="side-scrim" id="side-scrim"></div>
+    <div class="main">
+      <header class="top">
+        <button class="btn ghost icon menu-btn" id="menu-btn" type="button" aria-label="Open menu"></button>
+        <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+        <span class="grow"></span>
+        <button class="search-btn" id="search-btn" type="button" aria-label="Search or run a command (Ctrl K)"></button>
+        <button class="btn ghost icon" id="theme-btn" type="button"></button>
+        <button id="new-run-btn" type="button"></button>
+      </header>
+      <main class="content" id="main" tabindex="-1"></main>
+    </div>
+  </div>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

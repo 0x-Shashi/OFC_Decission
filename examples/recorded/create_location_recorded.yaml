@@ -1,0 +1,100 @@
+# Recorded on the 26C pod with the recorder's page script (the one `qm record` injects), driven
+# by a scripted user who clicked, typed and used "Add check" twice. Not edited afterwards apart
+# from this comment. Replays green: 12 steps. Stops at Cancel, so nothing is saved.
+# Compare with examples/tests/hcm/create_location.yaml, the hand-written version of TS002.
+id: hcm.create-location-recorded
+title: Create location (recorded)
+module: HCM
+product: Global Human Resources
+persona: HR Specialist
+tags:
+- recorded
+data:
+  value1: 01/01/1951
+  value2: Active
+  value3: QM Recorded Location
+  value4: '99990002'
+  value5: 500 Oracle Parkway
+  value6: '94065'
+  value7: Redwood Shores
+  value8: Common Set (seeded)
+steps:
+- action: navigate
+  intent: Open My Client Groups > Workforce Structures
+  value: My Client Groups > Workforce Structures
+- action: click
+  target:
+    strategies:
+    - role: link:Locations
+    - text: Locations
+  intent: Click Locations
+- action: click
+  target:
+    strategies:
+    - role: button:Add Location
+    - text: Add Location
+  intent: Click Add Location
+- action: fill
+  target:
+    strategies:
+    - role: group:Effective Start Date
+  value: ${value1}
+  intent: Enter Effective Start Date
+- action: select
+  target:
+    strategies:
+    - role: combobox:Status
+    - label: Status
+  value: ${value2}
+  intent: Choose Status
+- action: fill
+  target:
+    strategies:
+    - label: Name
+    - role: textbox:Name
+  value: ${value3}
+  intent: Enter Name
+- action: fill
+  target:
+    strategies:
+    - label: Code
+    - role: textbox:Code
+  value: ${value4}
+  intent: Enter Code
+- action: fill
+  target:
+    strategies:
+    - label: Address Line 1
+    - role: textbox:Address Line 1
+  value: ${value5}
+  intent: Enter Address Line 1
+- action: select
+  target:
+    strategies:
+    - role: combobox:Postal Code
+    - label: Postal Code
+  value: ${value6}
+  intent: Choose Postal Code
+  options:
+    pick: 94065 Redwood Shores, San Mateo, CA
+- action: assert_text
+  target:
+    strategies:
+    - xpath: //*[@id=//h2[normalize-space(.)='Addresses']/following::label[normalize-space(.)='City'][1]/@for]
+    - role: combobox:City
+    - label: City
+  value: ${value7}
+  intent: Check City
+- action: assert_text
+  target:
+    strategies:
+    - role: combobox:Location Set
+    - label: Location Set
+  value: ${value8}
+  intent: Check Location Set
+- action: click
+  target:
+    strategies:
+    - role: button:Cancel
+    - text: Cancel
+  intent: Click Cancel

@@ -1,0 +1,76 @@
+# First live HCM test. Labels and navigation were checked against the classic
+# Person Management search page ("Employee Management: Search") on a 26D pod.
+id: hcm.view-worker
+title: Search for a worker in Person Management and open their record
+module: HCM
+product: Global Human Resources
+process: Hire-to-Retire
+persona: HR Specialist
+priority: high
+tags: [person management, core hr, smoke]
+estimated_minutes: 2
+data:
+  # Change both to a worker that exists in your pod. The search page asks for the
+  # Employee Number; the results list the name as "Last, First".
+  employee_number: "20258"
+  worker_name: "Smith, John"
+  # What the record should show for that worker. Update these with the worker.
+  legal_employer: Lookahead US Corp.
+  job: Account Manager
+  department: Demo Department
+steps:
+  - action: navigate
+    intent: Open Person Management
+    value: My Client Groups > Person Management
+  - action: fill
+    intent: Enter employee number
+    value: ${employee_number}
+    target:
+      strategies:
+        - label: Employee Number
+        - role: "textbox:Employee Number"
+  - action: click
+    intent: Search
+    target:
+      strategies:
+        - role: "button:Search"
+  - action: assert_visible
+    intent: Search results list the worker
+    target:
+      strategies:
+        # Scoped to the results table: the page's "Columns Hidden" count is also a bare number.
+        - xpath: "//table[@summary='Search Results']//*[normalize-space(text())='${employee_number}']"
+  - action: click
+    intent: Open the worker's record
+    target:
+      strategies:
+        - role: "link:${worker_name}"
+  - action: assert_visible
+    intent: Worker's Employee Management page opens
+    target:
+      strategies:
+        - xpath: "//h1[contains(normalize-space(.), ': Employee Management')]"
+  - action: assert_visible
+    intent: Record shows the employee number
+    target:
+      strategies:
+        - text: ${employee_number}
+  # Read-only values have no accessible label, so each is found next to its label.
+  - action: assert_text
+    intent: Legal employer is shown
+    value: ${legal_employer}
+    target:
+      strategies:
+        - xpath: "//*[*/label[normalize-space(.)='Legal Employer']]/*[2]"
+  - action: assert_text
+    intent: Job is shown
+    value: ${job}
+    target:
+      strategies:
+        - xpath: "//*[*/label[normalize-space(.)='Job']]/*[2]"
+  - action: assert_text
+    intent: Department is shown
+    value: ${department}
+    target:
+      strategies:
+        - xpath: "//*[*/label[normalize-space(.)='Department']]/*[2]"

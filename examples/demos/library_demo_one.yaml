@@ -1,0 +1,11 @@
+# DEMO: shared steps. This test uses the group read-locations as it is (it reads one location).
+# See it in Quartermaster under Shared steps. It only reads from the pod, so it is safe.
+id: demo.library-one
+title: Shared steps demo one (reads only)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+steps:
+  - use: read-locations

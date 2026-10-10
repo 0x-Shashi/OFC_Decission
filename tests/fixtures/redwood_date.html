@@ -1,0 +1,34 @@
+<!doctype html><html><body>
+<!-- Like a Redwood date field: month / day / year boxes. A full box moves to the next one a moment
+     later, and keys typed meanwhile are lost (as on a busy pod). ?year=3 keeps only 3 year digits. -->
+<div role="group" aria-label="Effective Start Date" id="d">
+  <span role="spinbutton" aria-label="Month" tabindex="0" data-max="2"></span>/<span role="spinbutton" aria-label="Day" tabindex="0" data-max="2"></span>/<span role="spinbutton" aria-label="Year" tabindex="0" data-max="4"></span>
+  <span id="full"></span>
+</div>
+<script>
+// Like Redwood: a box that is full moves to the next one a moment later; keys typed meanwhile are lost.
+const boxes = [...document.querySelectorAll("[role=spinbutton]")];
+if (location.hash === "#year3") boxes[2].dataset.max = "3";
+let moving = false;
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const show = () => {
+  const [m, d, y] = boxes.map((b) => Number(b.getAttribute("aria-valuenow") || 0));
+  document.getElementById("full").textContent = m && d && y ? `${months[m - 1]} ${d}, ${y}` : "";
+};
+boxes.forEach((b, i) => {
+  b.addEventListener("focus", () => { b.dataset.buf = ""; });
+  b.addEventListener("keydown", (e) => {
+    if (!/^\d$/.test(e.key)) return;
+    e.preventDefault();
+    if (moving) return;
+    b.dataset.buf = ((b.dataset.buf || "") + e.key).slice(-Number(b.dataset.max));
+    b.textContent = b.dataset.buf;
+    b.setAttribute("aria-valuenow", String(Number(b.dataset.buf)));
+    show();
+    if (b.dataset.buf.length >= Number(b.dataset.max) && boxes[i + 1]) {
+      moving = true;
+      setTimeout(() => { moving = false; boxes[i + 1].focus(); }, 150);
+    }
+  });
+});
+</script></body></html>

@@ -1,0 +1,19 @@
+id: smoke.login
+title: Sign in and reach the Fusion home page
+module: Common
+product: Platform
+priority: critical
+tags: [smoke]
+estimated_minutes: 1
+steps:
+  - action: assert_visible
+    intent: Home page shows the Navigator (☰) icon
+    target:
+      strategies:
+        - role: "link:Navigator"
+        - css: "a[title='Navigator']"
+  - action: assert_visible
+    intent: Welcome message is shown
+    target:
+      strategies:
+        - xpath: "//*[starts-with(normalize-space(text()), 'Welcome,')]"

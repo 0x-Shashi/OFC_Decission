@@ -1,0 +1,19 @@
+# DEMO: a setup that is not met. This test is MEANT to stop with "Setup not met", because the setup asks for an address
+# the pod does not have (locationsV9). The steps never run, and Needs attention calls it "Test data not ready",
+# not a broken release. Change locationsV9 to locationsV2 and run it again: it passes.
+# It only reads from the pod (GET), so it is safe.
+id: demo.setup-gap
+title: Setup that is not met (stops at step 1)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+setup:
+  - action: api_call
+    intent: The pod has a location to work with
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV9?limit=1
+steps:
+  - action: api_call
+    intent: Read some locations
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2?limit=1

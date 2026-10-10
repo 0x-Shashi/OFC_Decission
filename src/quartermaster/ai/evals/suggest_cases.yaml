@@ -1,0 +1,185 @@
+# Golden cases for the AI that suggests what a missing button, link or field became (runner/suggest.py).
+# Each case is a step that could not find its item, the screen it was looking at (all made up: no pod text), and
+# what a careful person would answer:
+#   expect: {pick: [names that are right]}   one of these is the item under a new name
+#   expect: {none: true}                     the item is not on this screen; the AI must say so
+# A wrong pick (anything else) is the harmful answer: it would send the person to the wrong control.
+- id: renamed-button
+  step:
+    action: click
+    intent: Start creating a new worker
+    expected: The Add Worker page opens
+    target: {strategies: [{role: "button:Create Worker"}, {text: "Create Worker"}]}
+  screen:
+    - {role: button, name: Add Worker}
+    - {role: button, name: Cancel}
+    - {role: link, name: Home}
+  expect: {pick: [Add Worker]}
+
+- id: punctuation-in-a-field
+  step:
+    action: fill
+    intent: Type the name to search for
+    value: Patel
+    target: {strategies: [{label: "Search: Name"}]}
+  screen:
+    - {role: textbox, name: Search by Name}
+    - {role: button, name: Search}
+    - {role: link, name: Advanced Search}
+  expect: {pick: [Search by Name]}
+
+- id: field-renamed
+  step:
+    action: fill
+    intent: Enter the last name
+    value: Smith
+    target: {strategies: [{label: Last Name}]}
+  screen:
+    - {role: textbox, name: First Name}
+    - {role: textbox, name: Surname}
+    - {role: textbox, name: Middle Name}
+  expect: {pick: [Surname]}
+
+- id: longer-title
+  step:
+    action: click
+    intent: Open the Compensation section
+    expected: The compensation details show
+    target: {strategies: [{role: "link:Compensation"}]}
+  screen:
+    - {role: link, name: Compensation and Benefits}
+    - {role: link, name: Personal Details}
+    - {role: link, name: Absences}
+  expect: {pick: [Compensation and Benefits]}
+
+- id: redwood-card
+  step:
+    action: click
+    intent: Open the Locations page
+    expected: The list of locations shows
+    target: {strategies: [{text: Locations}]}
+  screen:
+    - {role: link, name: "Locations Create and manage work locations", title: Locations}
+    - {role: link, name: "Jobs Define jobs and job families", title: Jobs}
+    - {role: link, name: "Grades Define grades and rates", title: Grades}
+  expect: {pick: ["Locations Create and manage work locations"]}
+
+- id: combobox-renamed
+  step:
+    action: select
+    intent: Choose the country
+    value: Germany
+    target: {strategies: [{label: Country}]}
+  screen:
+    - {role: combobox, name: Country or Territory}
+    - {role: textbox, name: City}
+    - {role: textbox, name: Postal Code}
+  expect: {pick: [Country or Territory]}
+
+- id: checkbox-reworded
+  step:
+    action: click
+    intent: Include inactive workers in the search
+    expected: Inactive workers are listed
+    target: {strategies: [{label: Include inactive}]}
+  screen:
+    - {role: checkbox, name: Show inactive workers}
+    - {role: checkbox, name: Show only my reports}
+    - {role: button, name: Search}
+  expect: {pick: [Show inactive workers]}
+
+- id: count-in-the-name
+  step:
+    action: click
+    intent: Open the notifications
+    expected: The notifications list opens
+    target: {strategies: [{role: "button:Notifications"}]}
+  screen:
+    - {role: button, name: Notifications 3}
+    - {role: button, name: Settings and Actions}
+    - {role: link, name: Home}
+  expect: {pick: [Notifications 3]}
+
+- id: save-is-allowed-when-the-step-says-so
+  step:
+    action: click
+    intent: Save the record
+    expected: The record is saved
+    target: {strategies: [{role: "button:Save"}]}
+  screen:
+    - {role: button, name: Save and Close}
+    - {role: button, name: Cancel}
+    - {role: link, name: Help}
+  expect: {pick: [Save and Close]}
+
+- id: synonym-with-a-dangerous-neighbour
+  step:
+    action: click
+    intent: Go on to the next page of the form
+    expected: The next page opens
+    target: {strategies: [{role: "button:Continue"}]}
+  screen:
+    - {role: button, name: Next}
+    - {role: button, name: Delete Draft}
+    - {role: button, name: Back}
+  expect: {pick: [Next]}
+
+- id: the-item-is-not-there
+  step:
+    action: click
+    intent: Open the Approvals tab
+    expected: The approvals list shows
+    target: {strategies: [{role: "tab:Approvals"}]}
+  screen:
+    - {role: link, name: Home}
+    - {role: button, name: Cancel}
+    - {role: link, name: Personal Details}
+  expect: {none: true}
+
+- id: only-a-dangerous-button-is-left
+  step:
+    action: click
+    intent: Go back without changing anything
+    expected: The form closes
+    target: {strategies: [{role: "button:Back"}]}
+  screen:
+    - {role: button, name: Delete Worker}
+    - {role: button, name: Terminate Employment}
+    - {role: link, name: Help}
+  expect: {none: true}
+
+- id: an-error-page
+  step:
+    action: fill
+    intent: Enter the user name
+    value: tester
+    target: {strategies: [{label: User ID}]}
+  screen:
+    - {role: link, name: Try again}
+    - {role: button, name: Back}
+    - {role: link, name: Contact support}
+  expect: {none: true}
+
+- id: look-alike-but-different
+  step:
+    action: click
+    intent: Open the payroll results
+    expected: The payroll results list shows
+    target: {strategies: [{role: "link:Payroll Results"}]}
+  screen:
+    - {role: link, name: Payroll Calendar}
+    - {role: link, name: Payment Methods}
+    - {role: link, name: Payslips}
+  expect: {none: true}
+
+- id: two-equal-buttons
+  step:
+    action: click
+    intent: Add a line to the invoice
+    expected: A new line appears
+    target: {strategies: [{role: "button:Add Line"}]}
+  screen:
+    - {role: button, name: Add}
+    - {role: button, name: Add}
+    - {role: link, name: Invoices}
+  expect: {none: true}

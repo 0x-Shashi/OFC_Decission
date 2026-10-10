@@ -1,0 +1,45 @@
+# NOT YET CHECKED AGAINST A POD: navigation paths, labels and data are unverified examples.
+# This test submits a real transaction; run it only on a pod where that is acceptable.
+id: po.create-standard-order
+title: Create and submit a standard purchase order
+module: Procurement
+product: Purchasing
+process: Procure-to-Pay
+persona: Buyer
+priority: medium
+tags: [purchase order, p2p]
+estimated_minutes: 7
+data:
+  supplier: Lee Supplies
+  item: AS54888
+steps:
+  - action: navigate
+    intent: Open Purchase Orders work area
+    value: Procurement > Purchase Orders
+  - action: click
+    intent: Create an order
+    target:
+      strategies:
+        - role: "link:Create Order"
+  - action: select
+    intent: Enter supplier
+    value: ${supplier}
+    target:
+      strategies:
+        - label: Supplier
+  - action: fill
+    intent: Enter item
+    value: ${item}
+    target:
+      strategies:
+        - label: Item
+  - action: click
+    intent: Submit the order
+    target:
+      strategies:
+        - role: "button:Submit"
+  - action: assert_visible
+    intent: Confirmation shown
+    target:
+      strategies:
+        - text: Document submitted

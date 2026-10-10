@@ -1,0 +1,74 @@
+# NOT YET CHECKED AGAINST A POD: navigation paths, labels and data are unverified examples.
+# This test submits a real transaction; run it only on a pod where that is acceptable.
+id: ap.create-invoice-po-match
+title: Create and validate a PO-matched supplier invoice
+module: Financials
+product: Payables
+process: Procure-to-Pay
+persona: Accounts Payable Specialist
+priority: critical
+tags: [invoice, p2p, redwood]
+estimated_minutes: 6
+data:
+  business_unit: US1 Business Unit
+  supplier: Lee Supplies
+  invoice_number: QM-INV-${RUN_ID}
+  po_number: "US164012"
+  amount: "1250.00"
+steps:
+  - action: navigate
+    intent: Open Invoices work area
+    value: Payables > Invoices
+  - action: click
+    intent: Start a new invoice
+    target:
+      description: Create Invoice task
+      strategies:
+        - role: "link:Create Invoice"
+        - text: Create Invoice
+  - action: select
+    intent: Choose business unit
+    value: ${business_unit}
+    target:
+      strategies:
+        - label: Business Unit
+  - action: select
+    intent: Enter supplier
+    value: ${supplier}
+    target:
+      strategies:
+        - label: Supplier
+        - role: "combobox:Supplier"
+  - action: fill
+    intent: Enter invoice number
+    value: ${invoice_number}
+    target:
+      strategies:
+        - label: Number
+        - label: Invoice Number
+  - action: fill
+    intent: Enter invoice amount
+    value: ${amount}
+    target:
+      strategies:
+        - label: Amount
+  - action: fill
+    intent: Match to purchase order
+    value: ${po_number}
+    target:
+      strategies:
+        - label: Identifying PO
+        - label: Purchase Order
+  - action: click
+    intent: Validate the invoice
+    target:
+      strategies:
+        - role: "button:Validate"
+        - text: Validate
+  - action: assert_text
+    intent: Invoice is validated
+    value: Validated
+    target:
+      strategies:
+        - label: Validation Status
+        - test_id: validation-status

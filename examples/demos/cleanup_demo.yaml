@@ -1,0 +1,23 @@
+# DEMO: cleanup after a test. It only reads from the pod (GET), so it is safe.
+# Step 1 finds a location and keeps its id. The cleanup then runs after the test: here it just reads the
+# location again (it stands in for a DELETE). The run page says "Test data cleaned up".
+# To see the skipped case, change locationsV2 to locationsV9 in step 1: the test fails, nothing is saved,
+# and the cleanup says "Nothing to clean up".
+id: demo.cleanup
+title: Cleanup demo (reads only)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+steps:
+  - action: api_call
+    intent: Find a location
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2?limit=1
+    options:
+      save:
+        location_id: items[0].LocationId
+cleanup:
+  - action: api_call
+    intent: Look at the location again (stands in for a delete)
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2/${location_id}

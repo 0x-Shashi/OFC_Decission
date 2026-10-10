@@ -1,0 +1,21 @@
+# DEMO: setup steps. It only reads from the pod (GET), so it is safe.
+# The setup runs first, after sign-in: it checks that the pod has a location and keeps its id. The steps then use that id.
+# Open the run to see the setup listed before the steps (the evidence document has it too).
+id: demo.setup
+title: Setup demo (reads only)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+setup:
+  - action: api_call
+    intent: The pod has a location to work with
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2?limit=1
+    options:
+      save:
+        location_id: items[0].LocationId
+steps:
+  - action: api_call
+    intent: Read that location
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2/${location_id}

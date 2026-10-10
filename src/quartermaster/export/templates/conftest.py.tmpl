@@ -1,0 +1,35 @@
+"""pytest setup for the tests exported from Quartermaster: one browser for the run, a fresh `fusion` for each test."""
+
+from __future__ import annotations
+
+import os
+from collections.abc import Iterator
+from typing import Any
+
+import pytest
+from fusion_runtime import Fusion
+
+
+@pytest.fixture(scope="session")
+def browser() -> Iterator[Any]:
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as pw:
+        chromium = pw.chromium.launch(
+            headless=os.environ.get("QM_HEADED") != "1",  # QM_HEADED=1 shows the browser
+            executable_path=os.environ.get("QM_CHROMIUM_PATH") or None,
+        )
+        yield chromium
+        chromium.close()
+
+
+@pytest.fixture
+def fusion(browser: Any, request: pytest.FixtureRequest) -> Iterator[Fusion]:
+    url = os.environ.get("QM_FUSION_URL")
+    if not url:
+        pytest.fail(
+            "set QM_FUSION_URL to the address of your test pod, for example https://abcd-dev2.fa.us6.oraclecloud.com"
+        )
+    f = Fusion(browser, url, name=request.node.name)
+    yield f
+    f.close()

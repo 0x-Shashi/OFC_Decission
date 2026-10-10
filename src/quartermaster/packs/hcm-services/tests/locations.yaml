@@ -1,0 +1,22 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.hcm.locations
+title: "Locations: the service answers and returns the fields integrations rely on"
+module: HCM
+product: Global Human Resources
+process: Workforce Structures
+priority: medium
+tags: [library, hcm-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Locations service answers and lists records
+    value: GET /hcmRestApi/resources/11.13.18.05/locations?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].LocationId": "*"
+        "items[0].LocationName": "*"
+        "items[0].LocationCode": "*"
+        "items[0].ActiveStatus": "*"

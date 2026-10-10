@@ -1,0 +1,18 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had no records here, so only the answer itself is checked.
+id: lib.pro.purchase-agreements
+title: "Purchase agreements: the service answers and returns the fields integrations rely on"
+module: Procurement
+product: Purchasing
+process: Agreements
+priority: medium
+tags: [library, procurement-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Purchase agreements service answers
+    value: GET /fscmRestApi/resources/11.13.18.05/purchaseAgreements?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"

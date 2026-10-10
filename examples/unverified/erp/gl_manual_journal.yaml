@@ -1,0 +1,41 @@
+# NOT YET CHECKED AGAINST A POD: navigation paths, labels and data are unverified examples.
+# This test submits a real transaction; run it only on a pod where that is acceptable.
+id: gl.manual-journal-approval
+title: Create a manual journal and submit it for approval
+module: Financials
+product: General Ledger
+process: Record-to-Report
+persona: General Accountant
+priority: high
+tags: [journal, approval, r2r]
+estimated_minutes: 5
+data:
+  ledger: US Primary Ledger
+  batch: QM-JRNL-${RUN_ID}
+steps:
+  - action: navigate
+    intent: Open Journals work area
+    value: General Accounting > Journals
+  - action: click
+    intent: Create a journal
+    target:
+      strategies:
+        - role: "link:Create Journal"
+        - text: Create Journal
+  - action: fill
+    intent: Enter journal batch name
+    value: ${batch}
+    target:
+      strategies:
+        - label: Journal Batch
+  - action: click
+    intent: Submit for approval
+    target:
+      strategies:
+        - role: "button:Submit"
+  - action: assert_text
+    intent: Journal is pending approval
+    value: In process
+    target:
+      strategies:
+        - label: Approval Status

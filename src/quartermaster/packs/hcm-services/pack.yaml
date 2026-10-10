@@ -1,0 +1,17 @@
+pack: hcm-services
+title: HCM services (read only)
+module: HCM
+kind: rest
+version: 1
+read_only: true
+description: Asks Oracle's HCM REST services for one record each (workers, locations, departments, jobs, grades,
+  positions, legal employers, absences, payroll relationships, goals, checklists and more), and checks that the
+  fields integrations rely on are still returned. After a quarterly update a renamed or removed field, or a service
+  that stopped answering, shows here before an integration breaks.
+needs: A test user that may read these HCM REST services. A service the user may not read answers HTTP 403, and
+  that test fails with 'the API answered HTTP 403'. A test that checks fields needs at least one record of that
+  kind on the pod.
+checked:
+  date: '2026-10-03'
+  passed: 23
+  of: 23

@@ -1,0 +1,12 @@
+# DEMO: shared steps. The same group again, this time handing in how_many: 2.
+# Change the shared file (_library/read-locations.yaml) and this test and demo.library-one both follow.
+id: demo.library-two
+title: Shared steps demo two (reads only)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+steps:
+  - use: read-locations
+    with: {how_many: "2"}

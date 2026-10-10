@@ -1,0 +1,22 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.hcm.legal-employers
+title: "Legal employers: the service answers and returns the fields integrations rely on"
+module: HCM
+product: Global Human Resources
+process: Enterprise Structures
+priority: medium
+tags: [library, hcm-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Legal employers service answers and lists records
+    value: GET /hcmRestApi/resources/11.13.18.05/legalEmployers?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].OrganizationId": "*"
+        "items[0].Name": "*"
+        "items[0].LegalEntityId": "*"
+        "items[0].LegislationCode": "*"

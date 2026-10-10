@@ -1,0 +1,16 @@
+pack: financials-services
+title: Financials services (read only)
+module: Financials
+kind: rest
+version: 1
+read_only: true
+description: Asks the Financials REST services for one record each (payables and receivables invoices, receipts,
+  credit memos, ledgers, account combinations, currencies, payment terms, journal batches, expense reports, bank
+  accounts, projects) and checks the fields integrations rely on.
+needs: A test user that may read these Financials REST services (for example with the Accounts Payable, Accounts
+  Receivable and General Accounting duties). A service the user may not read answers HTTP 403. A test that checks
+  fields needs at least one record of that kind.
+checked:
+  date: '2026-10-03'
+  passed: 13
+  of: 13

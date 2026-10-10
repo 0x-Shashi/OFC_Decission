@@ -1,0 +1,191 @@
+# TS002 Create Location, from the customer's manual test script, automated up to Submit.
+# Checked against a 26C pod (Redwood Locations pages). It fills in a new location and checks
+# the address auto-fill, then cancels: Submit starts an approval that notifies the Budget &
+# FYI Payroll approval group, so it is deliberately not clicked. Nothing is saved.
+#
+# Differences from the manual script on this pod:
+# - Location Set (Common Set) and Status (Active) are already selected on a new location.
+#   Location Set is only checked, not chosen: dozens of sets on this pod contain "Common Set",
+#   and searching for it picks the wrong one.
+# - There is no address search box; choosing the postal code fills City, State and County.
+# - There are no phone number fields on this page (script step 6).
+id: hcm.create-location
+title: Fill in a new location up to Submit (TS002 Create Location)
+module: HCM
+product: Global Human Resources
+process: Workforce Structures
+persona: HR Specialist
+priority: high
+tags: [workforce structures, location, redwood]
+estimated_minutes: 3
+data:
+  # Test data. Code must be 8 digits and unique when submitted; 9999xxxx marks it as a test.
+  effective_start_date: "01/01/1951"
+  location_set: Common Set
+  status: Active
+  name: QM Test Location ${RUN_ID}
+  code: "99990001"
+  description: Quartermaster automated test location - do not use
+  address_line_1: 500 Oracle Parkway
+  postal_code: "94065"
+  # Expected auto-fill for that postal code.
+  city: Redwood City
+  state: CA
+  county: San Mateo
+steps:
+  # Step 1: My Client Groups > Workforce Structures > Locations
+  - action: navigate
+    intent: Open Workforce Structures
+    value: My Client Groups > Workforce Structures
+  - action: click
+    intent: Open Locations
+    target:
+      strategies:
+        - role: "link:Locations"
+  - action: assert_visible
+    intent: Locations search page opens
+    expected: "Locations Search page opens (TS002 step 1)."
+    target:
+      strategies:
+        - xpath: "//h1[normalize-space(.)='Locations']"
+  # Step 2: Add Location
+  - action: click
+    intent: Click Add Location
+    target:
+      strategies:
+        - role: "button:Add Location"
+  - action: assert_visible
+    intent: New location screen opens
+    expected: "New location screen opens (TS002 step 2)."
+    target:
+      strategies:
+        - xpath: "//h1[normalize-space(.)='New Location']"
+  # Step 3: location details
+  - action: fill
+    intent: Set effective start date to 1/1/1951
+    expected: "Date can be entered (TS002 step 3)."
+    value: ${effective_start_date}
+    target:
+      strategies:
+        - role: "group:Effective Start Date"
+  - action: assert_text
+    intent: Effective start date shows 1951
+    value: January 1, 1951
+    target:
+      strategies:
+        - role: "group:Effective Start Date"
+  - action: assert_text
+    intent: Location set is Common Set
+    expected: "Common Set (seeded) is already selected on a new location (TS002 step 3)."
+    value: ${location_set}
+    target:
+      strategies:
+        - role: "combobox:Location Set"
+  - action: select
+    intent: Choose status
+    expected: "Active can be selected (TS002 step 3)."
+    value: ${status}
+    target:
+      strategies:
+        - role: "combobox:Status"
+  - action: fill
+    intent: Enter location name
+    expected: "Data can be entered (TS002 step 3)."
+    value: ${name}
+    target:
+      strategies:
+        - role: "textbox:Name"
+  - action: fill
+    intent: Enter 8-digit location code
+    expected: "Data can be entered (TS002 step 3)."
+    value: ${code}
+    target:
+      strategies:
+        - role: "textbox:Code"
+  - action: fill
+    intent: Enter description
+    expected: "Data can be entered (TS002 step 3)."
+    value: ${description}
+    target:
+      strategies:
+        - role: "textbox:Description"
+  # Step 4: main address
+  - action: fill
+    intent: Enter address line 1
+    expected: "Data can be entered (TS002 step 4)."
+    value: ${address_line_1}
+    target:
+      strategies:
+        - role: "textbox:Address Line 1"
+  - action: select
+    intent: Choose postal code
+    expected: "Postal code can be selected (TS002 step 4)."
+    value: ${postal_code}
+    target:
+      strategies:
+        - role: "combobox:Postal Code"
+  # City, State and County appear twice on this page (main address and tax jurisdictions),
+  # so each is found through its label in the Addresses section.
+  - action: assert_text
+    intent: City is filled in from the postal code
+    expected: "City populates automatically (TS002 step 4)."
+    value: ${city}
+    target:
+      strategies:
+        - xpath: "//input[@id=//h2[normalize-space(.)='Addresses']/following::label[normalize-space(.)='City'][1]/@for]"
+  - action: assert_text
+    intent: State is filled in from the postal code
+    expected: "State populates automatically (TS002 step 4)."
+    value: ${state}
+    target:
+      strategies:
+        - xpath: "//input[@id=//h2[normalize-space(.)='Addresses']/following::label[normalize-space(.)='State'][1]/@for]"
+  - action: assert_text
+    intent: County is filled in from the postal code
+    expected: "County populates automatically (TS002 step 4)."
+    value: ${county}
+    target:
+      strategies:
+        - xpath: "//input[@id=//h2[normalize-space(.)='Addresses']/following::label[normalize-space(.)='County'][1]/@for]"
+  # Step 5: shipping details (all default to Yes)
+  - action: assert_visible
+    intent: Ship-to Site is Yes
+    expected: "Ship-to Site: Yes (TS002 step 5)."
+    target:
+      strategies:
+        - css: "role=radiogroup[name='Ship-to Site'] >> input[value='Y']:checked"
+  - action: assert_visible
+    intent: Receiving Site is Yes
+    expected: "Receiving Site: Yes (TS002 step 5)."
+    target:
+      strategies:
+        - css: "role=radiogroup[name='Receiving Site'] >> input[value='Y']:checked"
+  - action: assert_visible
+    intent: Office Site is Yes
+    expected: "Office Site: Yes (TS002 step 5)."
+    target:
+      strategies:
+        - css: "role=radiogroup[name='Office Site'] >> input[value='Y']:checked"
+  - action: assert_visible
+    intent: Bill-to Site is Yes
+    expected: "Bill-to Site: Yes (TS002 step 5)."
+    target:
+      strategies:
+        - css: "role=radiogroup[name='Bill-to Site'] >> input[value='Y']:checked"
+  # Step 7 (Submit) is not run; see the note at the top.
+  - action: assert_visible
+    intent: Submit is available
+    expected: "Submit button is available. Not clicked, see the note at the top."
+    target:
+      strategies:
+        - role: "button:Submit"
+  - action: click
+    intent: Cancel without submitting
+    target:
+      strategies:
+        - role: "button:Cancel"
+  - action: assert_visible
+    intent: Back on the Locations search page
+    target:
+      strategies:
+        - role: "button:Add Location"

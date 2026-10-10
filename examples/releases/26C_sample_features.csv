@@ -1,0 +1,6 @@
+Feature,Product,Product Family,Customer Must Take Action to Use,UI or Process-Based
+Redwood worker search,Global Human Resources,Human Capital Management,No,UI
+New personal details page,Global Human Resources,Human Capital Management,Yes,UI
+Location page shows address on map,Global Human Resources,Human Capital Management,No,UI
+Invoice approval by line,Payables,Enterprise Resource Planning,No,Process
+Sales order hold reasons redesigned,Order Management,Supply Chain Management,No,Process

@@ -1,0 +1,29 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.scm.receiving-receipt-requests
+title: "Receiving receipt requests: the service answers and returns the fields integrations rely on"
+module: SCM
+product: Receiving
+process: Receipts
+priority: medium
+tags: [library, supply-chain-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Receiving receipt requests service answers and lists records
+    value: GET /fscmRestApi/resources/11.13.18.05/receivingReceiptRequests?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].ReceiptSourceCode": "*"
+        "items[0].HeaderInterfaceId": "*"
+        "items[0].ReceiptNumber": "*"
+      save:
+        first_id: items[0].HeaderInterfaceId
+  - action: api_call
+    intent: One record of Receiving receipt requests can be read by its id
+    value: GET /fscmRestApi/resources/11.13.18.05/receivingReceiptRequests/${first_id}?onlyData=true
+    options:
+      check:
+        "HeaderInterfaceId": "*"

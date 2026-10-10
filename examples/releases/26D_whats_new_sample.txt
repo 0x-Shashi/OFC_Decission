@@ -1,0 +1,7 @@
+# Update 26D
+## Human Capital Management
+### Global Human Resources
+Redwood Worker Search
+Search for workers faster. The Redwood search page finds a person by name, number or assignment.
+New Personal Details Page
+A new Personal Details page replaces the old Person Details screens. Customer must take action to enable it.

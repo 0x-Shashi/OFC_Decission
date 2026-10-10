@@ -1,0 +1,21 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.cx.accounts
+title: "Sales accounts: the service answers and returns the fields integrations rely on"
+module: CX
+product: Sales
+process: Accounts
+priority: medium
+tags: [library, sales-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Sales accounts service answers and lists records
+    value: GET /crmRestApi/resources/11.13.18.05/accounts?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].PartyId": "*"
+        "items[0].PartyNumber": "*"
+        "items[0].OrganizationName": "*"

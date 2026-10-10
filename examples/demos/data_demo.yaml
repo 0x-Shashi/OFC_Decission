@@ -1,0 +1,21 @@
+# DEMO: test data. It only reads from the pod (GET), so it is safe.
+# `rows` comes from the data set pod-sizes (a pod's own value if it has one). `pick` is made fresh for every run:
+# a number from 1 to 3 that is the same all through one run, so the evidence shows exactly what was asked.
+# See it in Quartermaster under Test data.
+id: demo.test-data
+title: Test data demo (reads only)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+data_sets: [pod-sizes]
+generate:
+  pick: {number: [1, 3]}
+steps:
+  - action: api_call
+    intent: Find locations, as many as this pod's data set says
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2?limit=${rows}
+  - action: api_call
+    intent: Find locations, as many as a number made for this run says
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2?limit=${pick}

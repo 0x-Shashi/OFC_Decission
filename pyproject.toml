@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quartermaster"
+version = "0.1.0"
+description = "AI-assisted regression testing for Oracle Fusion Cloud quarterly updates"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.6", "pyyaml>=6.0"]
+
+[project.optional-dependencies]
+ai = ["anthropic>=1.0", "openai>=1.0"]
+browser = ["playwright>=1.45"]
+decisions = ["openai>=1.0"]  # OpenAI Decisions API (POST /v1/decisions, gpt-6-luna)
+dev = ["pytest>=8", "ruff>=0.5", "mypy>=1.10", "types-PyYAML"]
+
+[project.scripts]
+qm = "quartermaster.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quartermaster"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["playwright.*", "anthropic.*"]
+ignore_missing_imports = true

@@ -1,0 +1,29 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.pro.purchase-requisitions
+title: "Purchase requisitions: the service answers and returns the fields integrations rely on"
+module: Procurement
+product: Self Service Procurement
+process: Requisitions
+priority: medium
+tags: [library, procurement-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Purchase requisitions service answers and lists records
+    value: GET /fscmRestApi/resources/11.13.18.05/purchaseRequisitions?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].RequisitionHeaderId": "*"
+        "items[0].Requisition": "*"
+        "items[0].DocumentStatus": "*"
+      save:
+        first_id: items[0].RequisitionHeaderId
+  - action: api_call
+    intent: One record of Purchase requisitions can be read by its id
+    value: GET /fscmRestApi/resources/11.13.18.05/purchaseRequisitions/${first_id}?onlyData=true
+    options:
+      check:
+        "RequisitionHeaderId": "*"

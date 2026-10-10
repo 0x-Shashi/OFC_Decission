@@ -1,0 +1,18 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had no records here, so only the answer itself is checked.
+id: lib.fin.erp-integrations
+title: "ERP integrations service: the service answers and returns the fields integrations rely on"
+module: Financials
+product: Financials
+process: ERP Integrations
+priority: medium
+tags: [library, financials-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The ERP integrations service service answers
+    value: GET /fscmRestApi/resources/11.13.18.05/erpintegrations?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"

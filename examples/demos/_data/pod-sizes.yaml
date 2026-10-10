@@ -1,0 +1,10 @@
+# DEMO data set: how many rows a read-only lookup asks for, by pod.
+# Used by data_demo.yaml. Change a number here and the test follows on that pod.
+dataset: pod-sizes
+title: How many rows to ask for
+description: One value for every pod, and a different one for pods whose kind is TEST or STAGE.
+values:
+  rows: "2"
+pods:
+  TEST: {rows: "1"}
+  STAGE: {rows: "1"}

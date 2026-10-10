@@ -1,0 +1,29 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.scm.production-resources
+title: "Production resources: the service answers and returns the fields integrations rely on"
+module: SCM
+product: Manufacturing
+process: Resources
+priority: medium
+tags: [library, supply-chain-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Production resources service answers and lists records
+    value: GET /fscmRestApi/resources/11.13.18.05/productionResources?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].ResourceId": "*"
+        "items[0].ResourceCode": "*"
+        "items[0].ResourceName": "*"
+      save:
+        first_id: items[0].ResourceId
+  - action: api_call
+    intent: One record of Production resources can be read by its id
+    value: GET /fscmRestApi/resources/11.13.18.05/productionResources/${first_id}?onlyData=true
+    options:
+      check:
+        "ResourceId": "*"

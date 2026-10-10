@@ -1,0 +1,29 @@
+<!doctype html>
+<html><body>
+<!-- Minimal stand-in for a Fusion pod: native sign-in, then an ADF-like page with generated ids. -->
+<form id="login">
+  <label for="userid">User ID</label><input id="userid">
+  <label for="password">Password</label><input id="password" type="password">
+  <button type="submit">Sign In</button>
+</form>
+<script>
+document.getElementById("login").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const user = document.getElementById("userid").value;
+  document.body.innerHTML = `
+    <a href="#" title="Navigator" id="pt1:_UISmmLink">&#9776;</a>
+    <h1>Welcome, ${user}</h1>
+    <label for="pt1:_FOr1:r1:0:it1::content">Person Number</label>
+    <input id="pt1:_FOr1:r1:0:it1::content">
+    <label for="pt1:_FOr1:r1:0:soc1::content">Legal Employer</label>
+    <select id="pt1:_FOr1:r1:0:soc1::content"><option>--</option><option>US1 Legal Entity</option></select>
+    <button id="pt1:_FOr1:r1:0:cb1" onclick="search()">Search</button>
+    <table id="results"></table>`;
+});
+function search() {
+  const n = document.getElementById("pt1:_FOr1:r1:0:it1::content").value;
+  const le = document.getElementById("pt1:_FOr1:r1:0:soc1::content").value;
+  document.getElementById("results").innerHTML = `<tr><td>${n}</td><td>${le}</td></tr>`;
+}
+</script>
+</body></html>

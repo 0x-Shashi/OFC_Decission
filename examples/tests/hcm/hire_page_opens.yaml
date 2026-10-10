@@ -1,0 +1,63 @@
+# Read-only check of the hire flow: open Hire an Employee, check the first page's fields,
+# then cancel. Nothing is saved or submitted, so it is safe to run as often as you like.
+id: hcm.hire-page-opens
+title: Hire an Employee opens on the Identification page
+module: HCM
+product: Global Human Resources
+process: Hire-to-Retire
+persona: HR Specialist
+priority: high
+tags: [hire, core hr, smoke, read-only]
+estimated_minutes: 2
+steps:
+  - action: navigate
+    intent: Open New Person
+    value: My Client Groups > New Person
+  - action: click
+    intent: Open Hire an Employee
+    target:
+      strategies:
+        # This pod lists three "Hire an Employee" tasks, so the link name alone is ambiguous;
+        # the first opens the standard flow.
+        # Each row also has a disabled icon link with the same title, which does not open it.
+        - xpath: "(//a[@title='Hire an Employee' and not(@aria-disabled='true')])[1]"
+  - action: assert_visible
+    intent: Identification page opens
+    target:
+      strategies:
+        - xpath: "//h1[normalize-space(.)='Hire an Employee: Identification']"
+  - action: assert_visible
+    intent: Hire Date field is shown
+    target:
+      strategies:
+        - label: Hire Date
+  - action: assert_visible
+    intent: Legal Employer field is shown
+    target:
+      strategies:
+        - label: Legal Employer
+  - action: assert_visible
+    intent: First Name field is shown
+    target:
+      strategies:
+        - label: First Name
+  - action: assert_visible
+    intent: Last Name field is shown
+    target:
+      strategies:
+        - label: Last Name
+  - action: click
+    intent: Leave without saving
+    target:
+      strategies:
+        - role: "button:Cancel"
+  - action: click
+    intent: Confirm discarding the unsaved hire
+    target:
+      strategies:
+        - role: "button:Yes"
+  - action: assert_visible
+    intent: Back on the New Person task list
+    target:
+      strategies:
+        - text: What do you want to do or manage?

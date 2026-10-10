@@ -1,0 +1,42 @@
+# Read-only self-service check: the signed-in user opens their own Personal Details.
+# Nothing is changed, so it is safe to run as often as you like.
+id: hcm.view-my-personal-info
+title: Employee opens their Personal Details
+module: HCM
+product: Global Human Resources
+process: Employee Self Service
+persona: Employee
+priority: high
+tags: [self service, personal info, smoke, read-only]
+estimated_minutes: 1
+data:
+  # The signed-in test user's own name, as shown on Personal Details.
+  first_name: SCM
+  last_name: User10
+steps:
+  - action: navigate
+    intent: Open Personal Information
+    value: Me > Personal Information
+  - action: click
+    intent: Open the Personal Details tile
+    target:
+      strategies:
+        - text: Personal Details
+  - action: assert_visible
+    intent: Personal Details page opens
+    target:
+      strategies:
+        - xpath: "//h1[normalize-space(.)='Personal Details']"
+  # Read-only values have no accessible label, so each is found next to its label.
+  - action: assert_text
+    intent: First name is shown
+    value: ${first_name}
+    target:
+      strategies:
+        - xpath: "//*[*/label[normalize-space(.)='First Name']]/*[2]"
+  - action: assert_text
+    intent: Last name is shown
+    value: ${last_name}
+    target:
+      strategies:
+        - xpath: "//*[*/label[normalize-space(.)='Last Name']]/*[2]"

@@ -1,0 +1,71 @@
+# NOT YET CHECKED AGAINST A POD: navigation paths, labels and data are unverified examples.
+# This test submits a real transaction; run it only on a pod where that is acceptable.
+id: hcm.hire-employee
+title: Hire an employee through the Redwood hire flow
+module: HCM
+product: Global Human Resources
+process: Hire-to-Retire
+persona: HR Specialist
+priority: critical
+tags: [hire, redwood, core hr]
+estimated_minutes: 8
+data:
+  last_name: QMTest${RUN_ID}
+  first_name: Alex
+  legal_employer: US1 Legal Entity
+  business_unit: US1 Business Unit
+  job: Accountant
+  hire_date: "2026-10-01"
+steps:
+  - action: navigate
+    intent: Open the Hire an Employee quick action
+    value: My Client Groups > Hire an Employee
+  - action: fill
+    intent: Enter hire date
+    value: ${hire_date}
+    target:
+      strategies:
+        - label: Hire Date
+        - label: Effective Date
+  - action: select
+    intent: Choose legal employer
+    value: ${legal_employer}
+    target:
+      strategies:
+        - label: Legal Employer
+  - action: fill
+    intent: Enter last name
+    value: ${last_name}
+    target:
+      strategies:
+        - label: Last Name
+  - action: fill
+    intent: Enter first name
+    value: ${first_name}
+    target:
+      strategies:
+        - label: First Name
+  - action: select
+    intent: Choose business unit
+    value: ${business_unit}
+    target:
+      strategies:
+        - label: Business Unit
+  - action: select
+    intent: Choose job
+    value: ${job}
+    target:
+      strategies:
+        - label: Job
+  - action: click
+    intent: Submit the hire
+    target:
+      strategies:
+        - role: "button:Submit"
+        - text: Submit
+  - action: assert_visible
+    intent: Hire is submitted
+    target:
+      strategies:
+        - text: Your transaction was submitted
+        - role: "alert:Confirmation"

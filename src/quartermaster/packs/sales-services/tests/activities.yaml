@@ -1,0 +1,20 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.cx.activities
+title: "Activities: the service answers and returns the fields integrations rely on"
+module: CX
+product: Sales
+process: Activities
+priority: medium
+tags: [library, sales-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Activities service answers and lists records
+    value: GET /crmRestApi/resources/11.13.18.05/activities?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].ActivityId": "*"
+        "items[0].ActivityNumber": "*"

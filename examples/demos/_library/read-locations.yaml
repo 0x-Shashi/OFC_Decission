@@ -1,0 +1,18 @@
+# DEMO shared steps. They only read from the pod (GET), so they are safe.
+# Used by library_demo_one.yaml and library_demo_two.yaml. Change this file and both tests follow.
+library: read-locations
+title: Read some locations (reads only)
+description: Finds locations on the pod and keeps the first one's id; the cleanup reads it again.
+params:
+  how_many: "1"
+steps:
+  - action: api_call
+    intent: Find ${how_many} location(s)
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2?limit=${how_many}
+    options:
+      save:
+        location_id: items[0].LocationId
+cleanup:
+  - action: api_call
+    intent: Look at the location again (stands in for a delete)
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2/${location_id}

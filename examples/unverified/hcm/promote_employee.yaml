@@ -1,0 +1,49 @@
+# NOT YET CHECKED AGAINST A POD: navigation paths, labels and data are unverified examples.
+# This test submits a real transaction; run it only on a pod where that is acceptable.
+id: hcm.promote-employee
+title: Line manager promotes a direct report with a salary change
+module: HCM
+product: Global Human Resources
+process: Hire-to-Retire
+persona: Line Manager
+priority: high
+tags: [promotion, compensation, approval, redwood]
+estimated_minutes: 6
+data:
+  employee: Alex QMTest
+  new_grade: Grade 5
+  salary: "85000"
+steps:
+  - action: navigate
+    intent: Open the Promote quick action
+    value: My Team > Promote
+  - action: select
+    intent: Pick the employee
+    value: ${employee}
+    target:
+      strategies:
+        - label: Person
+        - role: "combobox:Search for a person"
+  - action: select
+    intent: Choose the new grade
+    value: ${new_grade}
+    target:
+      strategies:
+        - label: Grade
+  - action: fill
+    intent: Enter the new salary
+    value: ${salary}
+    target:
+      strategies:
+        - label: Salary Amount
+        - label: Salary
+  - action: click
+    intent: Submit the promotion
+    target:
+      strategies:
+        - role: "button:Submit"
+  - action: assert_visible
+    intent: Promotion is submitted for approval
+    target:
+      strategies:
+        - text: Your transaction was submitted

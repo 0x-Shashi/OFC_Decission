@@ -1,0 +1,23 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.scm.items-v2
+title: "Items (version 2): the service answers and returns the fields integrations rely on"
+module: SCM
+product: Product Hub
+process: Items
+priority: medium
+tags: [library, supply-chain-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Items (version 2) service answers and lists records
+    value: GET /fscmRestApi/resources/11.13.18.05/itemsV2?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].ItemNumber": "*"
+        "items[0].ItemId": "*"
+        "items[0].OrganizationId": "*"
+        "items[0].OrganizationCode": "*"
+        "items[0].ItemDescription": "*"

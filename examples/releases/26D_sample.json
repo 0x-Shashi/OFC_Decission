@@ -1,0 +1,91 @@
+{
+  "id": "26D",
+  "features": [
+    {
+      "id": "FIN-AP-001",
+      "module": "Financials",
+      "product": "Payables",
+      "title": "Redwood Create Invoice page",
+      "description": "Create and validate supplier invoices using the new Redwood invoice page with inline matching to purchase orders.",
+      "change_type": "UI",
+      "opt_in": true,
+      "customer_action_required": true,
+      "tags": [
+        "redwood",
+        "invoice"
+      ]
+    },
+    {
+      "id": "FIN-GL-002",
+      "module": "Financials",
+      "product": "General Ledger",
+      "title": "Journal approval notifications redesigned",
+      "description": "Approval notifications for manual journals now show line-level detail.",
+      "change_type": "PROCESS",
+      "tags": [
+        "journal",
+        "approval"
+      ]
+    },
+    {
+      "id": "PRC-PO-003",
+      "module": "Procurement",
+      "product": "Purchasing",
+      "title": "Purchase order change order tolerances",
+      "description": "Define tolerances for automatic approval of purchase order change orders.",
+      "change_type": "PROCESS",
+      "tags": [
+        "purchase order",
+        "approval"
+      ]
+    },
+    {
+      "id": "HCM-ABS-004",
+      "module": "HCM",
+      "product": "Absence Management",
+      "title": "Absence balance projection",
+      "description": "Workers can project future absence balances.",
+      "change_type": "UI",
+      "tags": [
+        "absence"
+      ]
+    },
+    {
+      "id": "HCM-CORE-005",
+      "module": "HCM",
+      "product": "Global Human Resources",
+      "title": "Redwood Hire an Employee guided flow",
+      "description": "Hire employees using a configurable Redwood guided flow; the classic hire page is retired.",
+      "change_type": "UI",
+      "opt_in": false,
+      "customer_action_required": true,
+      "tags": [
+        "hire",
+        "redwood"
+      ]
+    },
+    {
+      "id": "HCM-CMP-006",
+      "module": "HCM",
+      "product": "Workforce Compensation",
+      "title": "Salary change approval routing by grade",
+      "description": "Route salary changes for promotions to approvers based on grade and amount.",
+      "change_type": "PROCESS",
+      "tags": [
+        "compensation",
+        "approval"
+      ]
+    },
+    {
+      "id": "SCM-OM-007",
+      "module": "SCM",
+      "product": "Order Management",
+      "title": "Sales order hold reasons redesigned",
+      "description": "New hold reason codes on sales orders.",
+      "change_type": "UI",
+      "tags": [
+        "sales order"
+      ]
+    }
+  ]
+}

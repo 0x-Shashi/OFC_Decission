@@ -1,0 +1,31 @@
+# Quartermaster test library. Read only: it only asks the pod questions (GET), it never changes anything.
+# The pod this was checked on had records here, so the fields below are required.
+id: lib.fin.payables-invoices
+title: "Payables invoices: the service answers and returns the fields integrations rely on"
+module: Financials
+product: Payables
+process: Invoices
+priority: medium
+tags: [library, financials-services, rest, read-only]
+estimated_minutes: 0.5
+steps:
+  - action: api_call
+    intent: The Payables invoices service answers and lists records
+    value: GET /fscmRestApi/resources/11.13.18.05/invoices?limit=1&onlyData=true
+    options:
+      check:
+        count: "*"
+        hasMore: "*"
+        "items[0].InvoiceId": "*"
+        "items[0].InvoiceNumber": "*"
+        "items[0].InvoiceAmount": "*"
+        "items[0].InvoiceCurrency": "*"
+        "items[0].ApprovalStatus": "*"
+      save:
+        first_id: items[0].InvoiceId
+  - action: api_call
+    intent: One record of Payables invoices can be read by its id
+    value: GET /fscmRestApi/resources/11.13.18.05/invoices/${first_id}?onlyData=true
+    options:
+      check:
+        "InvoiceId": "*"

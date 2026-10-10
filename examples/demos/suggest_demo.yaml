@@ -1,0 +1,19 @@
+# DEMO: a button that "was renamed", to see suggested fixes. It only opens a page and looks at it.
+# The Workforce Structures page has a link called "Locations". This test looks for "Location", as if
+# Oracle had changed the name. It fails at step 2, and Needs attention suggests "Locations".
+id: demo.suggest
+title: Suggestion demo (renamed link, reads only)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+steps:
+  - action: navigate
+    intent: Open Workforce Structures
+    value: My Client Groups > Workforce Structures
+  - action: click
+    intent: Open Locations
+    target:
+      strategies:
+        - role: "link:Location"

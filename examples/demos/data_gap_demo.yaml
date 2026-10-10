@@ -1,0 +1,17 @@
+# DEMO: a gap in the test data. On any pod that is not a STAGE pod this test is MEANT to stop with the message
+# "No test data for location_limit on ...", because only STAGE has a value for it.
+# Add your pod's kind or name under pods: (for example `DEV: {location_limit: "1"}`) and run it again: it passes.
+# It only reads from the pod (GET), so it is safe. See it in Needs attention as "Test data not ready".
+id: demo.test-data-gap
+title: Test data gap demo (stops unless STAGE)
+module: HCM
+product: Global Human Resources
+process: Demo
+priority: low
+tags: [demo]
+pods:
+  STAGE: {location_limit: "1"}
+steps:
+  - action: api_call
+    intent: Find a few locations
+    value: GET /hcmRestApi/resources/11.13.18.05/locationsV2?limit=${location_limit}
